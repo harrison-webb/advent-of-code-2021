@@ -33,11 +33,49 @@ func ReadInts(fname string) ([]int, error) {
   scanner := bufio.NewScanner(f)
   var result []int
   for scanner.Scan() {
-      x, err := strconv.Atoi(scanner.Text())
-      if err != nil {
-          return result, err
-      }
-      result = append(result, x)
+    x, err := strconv.Atoi(scanner.Text())
+    if err != nil {
+        return result, err
+    }
+    result = append(result, x)
+  }
+  return result, scanner.Err()
+}
+
+//function to convert text file of numbers to an array
+//elements inserted by lines of file
+func textToIntArray(fname string) ([]int, error){
+  f, err := os.Open(fname)
+  if err != nil {
+    log.Fatal(err)
+  }
+  defer f.Close()
+
+  scanner := bufio.NewScanner(f)
+  var result []int
+  for scanner.Scan() {
+    x, err := strconv.Atoi(scanner.Text())
+    if err != nil {
+      return result, err
+    }
+    result = append(result, x)
+  }
+  return result, scanner.Err()
+}
+
+//function to convert text file to string array
+//elements inserted by lines of file
+func textToStringArray(fname string) ([]string, error){
+  f, err := os.Open(fname)
+  if err != nil {
+    log.Fatal(err)
+  }
+  defer f.Close()
+
+  scanner := bufio.NewScanner(f)
+  var result []string
+  for scanner.Scan() {
+    result = append(result, scanner.Text())
   }
   return result, scanner.Err()
 }
