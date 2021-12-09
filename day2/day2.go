@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"strings"
 )
 
 
@@ -15,7 +16,7 @@ func main(){
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(part1(f1))
+	fmt.Println(part1Better(f1))
 	f1.Close()
 
 
@@ -24,7 +25,7 @@ func main(){
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(part2(f2))
+	fmt.Println(part2Better(f2))
 	f2.Close()
 }
 
@@ -97,5 +98,59 @@ func extractNum(s string) (int) {
 		return 0
 	}
 	return returnInt
+}
+
+
+//improved solution inspired by Liz Fong-Jones AOC stream
+func part1Better(f *os.File) (int) {
+	depth := 0
+	horizontal := 0
+
+	scanner := bufio.NewScanner(f)
+	
+	for scanner.Scan(){
+		s := scanner.Text()
+		split := strings.Split(s, " ")
+		direction := split[0]
+		num, _ := strconv.Atoi(split[1])
+		switch direction {
+			case "forward":
+				horizontal += num
+			case "up":
+				depth -= num
+			case "down":
+				depth += num
+		}
+	}
+
+	return depth * horizontal
+}
+
+
+//improved solution inspired by Liz Fong-Jones AOC stream
+func part2Better(f *os.File) (int) {
+	depth := 0
+	horizontal := 0
+	aim := 0
+
+	scanner := bufio.NewScanner(f)
+	
+	for scanner.Scan(){
+		s := scanner.Text()
+		split := strings.Split(s, " ")
+		direction := split[0]
+		num, _ := strconv.Atoi(split[1])
+		switch direction {
+			case "forward":
+				horizontal += num
+				depth += aim * num
+			case "up":
+				aim -= num
+			case "down":
+				aim += num
+		}
+	}
+
+	return depth * horizontal
 }
   
